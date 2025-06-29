@@ -333,8 +333,8 @@ func getTronWalletInfo(address string) string {
 	var netRemaining = result.Get("bandwidth.netRemaining").Int() + result.Get("bandwidth.freeNetRemaining").Int()
 	var netLimit = result.Get("bandwidth.netLimit").Int() + result.Get("bandwidth.freeNetLimit").Int()
 	var text = `
->💰 TRX余额：0.00 TRX
->💲 USDT余额：0.00 USDT
+>💰 TRX余额：` + help.Ec("0.00 TRX") + `
+>💲 USDT余额：` + help.Ec("0.00 USDT") + `
 >📬 交易数量：` + result.Get("totalTransactionCount").String() + `
 >📈 转账数量：↑ ` + result.Get("transactions_out").String() + ` ↓ ` + result.Get("transactions_in").String() + `
 >📡 宽带资源：` + fmt.Sprintf("%v", netRemaining) + ` / ` + fmt.Sprintf("%v", netLimit) + ` 
@@ -345,10 +345,10 @@ func getTronWalletInfo(address string) string {
 
 	for _, v := range result.Get("withPriceTokens").Array() {
 		if v.Get("tokenName").String() == "trx" {
-			text = strings.Replace(text, "0.00 TRX", help.Ec(fmt.Sprintf("%.2f TRX", v.Get("balance").Float()/1000000)), 1)
+			text = strings.Replace(text, help.Ec("0.00 TRX"), help.Ec(fmt.Sprintf("%.2f TRX", v.Get("balance").Float()/1000000)), 1)
 		}
 		if v.Get("tokenName").String() == "Tether USD" {
-			text = strings.Replace(text, "0.00 USDT", help.Ec(fmt.Sprintf("%.2f USDT", v.Get("balance").Float()/1000000)), 1)
+			text = strings.Replace(text, help.Ec("0.00 USDT"), help.Ec(fmt.Sprintf("%.2f USDT", v.Get("balance").Float()/1000000)), 1)
 		}
 	}
 
